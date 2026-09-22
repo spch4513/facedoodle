@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { min-height: 100%; }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    background-image:
+      linear-gradient(90deg, transparent 58px, rgba(230, 57, 70, 0.25) 58px, rgba(230, 57, 70, 0.25) 60px, transparent 60px),
+      repeating-linear-gradient(180deg, transparent 0 31px, rgba(26, 26, 46, 0.07) 31px 32px);
+    background-attachment: fixed;
+  }
+  ::selection { @apply bg-blood text-white; }
+}
+
+@layer components {
+  /* The "drawn with a shaky Sharpie" border. */
+  .sketch {
+    border: 2.5px solid #1a1a2e;
+    border-radius: 255px 18px 225px 18px / 18px 225px 18px 255px;
+  }
+  .sketch-alt {
+    border: 2.5px solid #1a1a2e;
+    border-radius: 18px 225px 18px 255px / 255px 18px 225px 18px;
+  }
+  .ink-btn {
+    @apply sketch inline-flex items-center justify-center gap-1.5 bg-white px-3 py-2 font-hand text-lg leading-none shadow-ink-sm
+      transition-transform duration-100 select-none;
+  }
+  .ink-btn:hover:not(:disabled) { @apply animate-wiggle; }
+  .ink-btn:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: none; }
+  .ink-btn:disabled { @apply opacity-40 cursor-not-allowed; }
+  .ink-btn:focus-visible, .chip:focus-visible { outline: 3px dashed #e63946; outline-offset: 3px; }
+  .ink-btn-red { @apply ink-btn bg-blood text-white; }
+  .ink-btn-gold { @apply ink-btn bg-gold; }
+
+  .chip {
+    @apply sketch-alt relative flex items-center gap-2 bg-white/90 px-2.5 py-2 text-left font-hand text-[16px] leading-tight
+      shadow-ink-sm transition-all duration-100 select-none;
+  }
+  .chip:hover { @apply -rotate-1 scale-[1.03] bg-white; }
+  .chip:active { transform: translate(2px, 2px) scale(0.98); box-shadow: none; }
+  .chip[data-active='true'] { @apply bg-blood/10; border-color: #e63946; box-shadow: 2px 2px 0 0 #e63946; }
+
+  .panel {
+    @apply sketch bg-white/80 p-3 shadow-ink backdrop-blur-sm;
+  }
+  .marker { @apply font-marker tracking-wide; }
+}
+
+.scroll-thin { scrollbar-width: thin; scrollbar-color: #1a1a2e transparent; }
+
+input[type='range'].ink-range { accent-color: #e63946; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-btn:hover:not(:disabled), .animate-float { animation: none !important; }
+}
